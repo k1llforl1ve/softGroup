@@ -13,12 +13,16 @@ class Model
     {
         require(dirname(dirname(__FILE__)) . '/config/config.php');
 
-        $dsn = "mysql:host={$database_server};dbname={$dbase}";
+        $dsn = "mysql:host={$database_server};dbname={$dbase};charser={$database_connection_charset}";
         $db = new PDO($dsn, $database_user, $database_password);
         return $db;
     }
-    public function prepareDataforCreate($data)
+    public function prepareDataforCreate($data,$dataPreset='')
     {
+        if ($dataPreset != '')
+        {
+            $data = array_intersect_key  ($data, $dataPreset);
+        }
         if (!$data) die('Data wasnt set in CreateComment Action');
         foreach ($data as $key => $value) {
             $output['keys'][] = "`" . htmlspecialchars($key) . "`";

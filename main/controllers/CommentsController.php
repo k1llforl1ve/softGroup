@@ -8,6 +8,12 @@ class CommentsController extends Controller
         $Comments = new Comments();
         $data['output'] = $Comments->getAllComments();
         $data['commentscount'] = $Comments->getCommentsCount();
+   
+        ob_start();
+        if ($data['output']) {
+            require ROOT_PATH . 'views/Comments/tpls/Comments.php';
+        }
+        $data['comments'] =  ob_get_clean();
         return $this->render('index', $data);
     }
 }

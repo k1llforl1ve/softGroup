@@ -3,6 +3,11 @@
 class Controller
 {
     public $data;
+    public function __construct()
+    {
+    
+    }
+
     public function render($page_view, $data = '', $template_view = "mainTemp.php")
     {
         require(dirname(dirname(__FILE__)) . '/config/config.php');

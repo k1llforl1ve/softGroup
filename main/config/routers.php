@@ -6,4 +6,6 @@ return array(
     'login/login' => 'login/login', //LoginController.php->actionLogin
     'login/register' => 'login/register', //LoginController.php->actionIndex
     'ajax/create' => 'ajax/create', //AjaxController.php->actionCreate
+    'ajax/edit' => 'ajax/edit', //AjaxController.php->actionCreate
+    'ajax/delete' => 'ajax/delete', //AjaxController.php->actionCreate
 );

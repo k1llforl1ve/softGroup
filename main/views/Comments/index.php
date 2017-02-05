@@ -10,7 +10,7 @@
                 <div class="pull-left meta">
                     <div class="title h5">
                         <a href="#"><b><? print_r($_SESSION['user']['login']) ?></b></a>
-                        made a post.
+
                     </div>
                     <a href="<?php echo SITE_URL; ?>login/logout">Logout</a>
                 </div>
@@ -20,7 +20,8 @@
                 <div class="stats">
 
                     <a href="#" onclick="return false;" class="btn btn-default stat-item">
-                        <i class="fa fa-share icon"></i><?= $data['commentscount'] ?>
+                        <i class="fa fa-share icon"></i>
+                        <b><?= $data['commentscount'] ?></b>
                     </a>
                 </div>
             </div>
@@ -51,23 +52,7 @@
                 <? endif; ?>
                 <ul class="comments-list">
                     <!-- TODO: передать под функцию шаблонизации -->
-                    <? foreach ($data['output'] as $item): ?>
-                        <li class="comment">
-                            <a class="pull-left" href="#">
-                                <img class="avatar" src="http://bootdey.com/img/Content/user_1.jpg" alt="avatar">
-                            </a>
-                            <div class="comment-body">
-                                <div class="comment-heading">
-                                    <h4 class="user"><?= htmlspecialchars($item['parent']) ?></h4>
-                                    <h5 class="time"><?= strftime("%d %h %H:%M", $item['createdon']) ?></h5>
-
-                                </div>
-                                <p><?= htmlspecialchars($item['body']) ?></p>
-
-                            </div>
-                        </li>
-
-                    <? endforeach; ?>
+                    <? print_r($data['comments'])?>
                 </ul>
             </div>
         </div>

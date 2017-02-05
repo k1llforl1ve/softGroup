@@ -1,3 +1,14 @@
+.dis-none{
+    display: none;
+}
+.function{
+    float: left;
+}
+.button-save{
+    padding: 15px;
+    text-align: right;
+    border-top: 1px solid #e5e5e5;
+}
 .test{
     color: red;
     font-size: 20px;
@@ -75,7 +86,7 @@
     list-style-type: none;
 }
 .post .post-footer .comments-list .comment {
-    display: block;
+    display: inline-block;
     width: 100%;
     margin: 20px 0;
 }

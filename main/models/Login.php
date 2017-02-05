@@ -32,8 +32,9 @@ class Login extends Model
         ));
         $q->setFetchMode(PDO::FETCH_ASSOC);
         $data = $q->fetchAll();
-        print_r($data);
+        return($data[0][$para]);
     }
+    
     public function createUser($properities)
     {
         $data = $this->prepareDataforCreate($properities);
