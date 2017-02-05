@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="2196263827">
+  <component name="DataSourceManagerImpl" format="xml" hash="3504908984">
     <data-source source="LOCAL" name="MySQL - kifa_soft@kifa.mysql.ukraine.com.ua" uuid="c95898b2-dd63-4231-a069-28f0892d4cb2">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>

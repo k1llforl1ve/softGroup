@@ -9,16 +9,66 @@
     <database-model serializer="dbm" rdbms="MYSQL" format-version="2.5">
       <schema id="1" name="kifa_soft"/>
       <table id="2" parent="1" name="comments"/>
-      <column id="3" parent="2" name="id">
+      <table id="3" parent="1" name="users"/>
+      <column id="4" parent="2" name="id">
         <mandatory>1</mandatory>
         <data-type>int(11)</data-type>
         <sequence-identity>1</sequence-identity>
       </column>
-      <column id="4" parent="2" name="body">
+      <column id="5" parent="2" name="body">
         <mandatory>1</mandatory>
         <data-type>text</data-type>
       </column>
-      <key id="5" parent="2" name="PRIMARY">
+      <column id="6" parent="2" name="parent">
+        <mandatory>1</mandatory>
+        <data-type>int(10)</data-type>
+        <default-expression>&apos;0&apos;</default-expression>
+      </column>
+      <column id="7" parent="2" name="thread">
+        <mandatory>1</mandatory>
+        <data-type>int(10)</data-type>
+      </column>
+      <column id="8" parent="2" name="rating">
+        <mandatory>1</mandatory>
+        <data-type>varchar(10)</data-type>
+      </column>
+      <column id="9" parent="2" name="createdon">
+        <mandatory>1</mandatory>
+        <data-type>varchar(20)</data-type>
+        <default-expression>&apos;0&apos;</default-expression>
+      </column>
+      <column id="10" parent="2" name="editedon">
+        <mandatory>1</mandatory>
+        <data-type>varchar(20)</data-type>
+        <default-expression>&apos;0&apos;</default-expression>
+      </column>
+      <column id="11" parent="2" name="active">
+        <mandatory>1</mandatory>
+        <data-type>smallint(6)</data-type>
+        <default-expression>&apos;1&apos;</default-expression>
+      </column>
+      <key id="12" parent="2" name="PRIMARY">
+        <columns>id</columns>
+        <primary>1</primary>
+      </key>
+      <column id="13" parent="3" name="id">
+        <mandatory>1</mandatory>
+        <data-type>int(11)</data-type>
+        <sequence-identity>1</sequence-identity>
+      </column>
+      <column id="14" parent="3" name="login">
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="15" parent="3" name="password">
+        <mandatory>1</mandatory>
+        <data-type>varchar(255)</data-type>
+      </column>
+      <column id="16" parent="3" name="date_created">
+        <mandatory>1</mandatory>
+        <data-type>varchar(20)</data-type>
+      </column>
+      <key id="17" parent="3" name="PRIMARY">
         <columns>id</columns>
         <primary>1</primary>
       </key>

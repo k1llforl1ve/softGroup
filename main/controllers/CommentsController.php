@@ -8,7 +8,6 @@ class CommentsController extends Controller
         $Comments = new Comments();
         $data['output'] = $Comments->getAllComments();
         $data['commentscount'] = $Comments->getCommentsCount('');
-        
         return $this->render('index', $data);
     }
 }

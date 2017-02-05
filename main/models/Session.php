@@ -6,6 +6,7 @@ class Session extends Model
     public static function init()
     {
         @session_start();
+        
     }
     //удаляем сессию
     public static function destroy() {

@@ -8,7 +8,7 @@ class MiddleController
         include_once ROOT_PATH.'controllers/LoginController.php';
         $login  = new LoginController();
 
-        echo $login->run();
+        
     }
 
 }
