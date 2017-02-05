@@ -6,10 +6,11 @@ class Comments extends Model
 {
 
 
-    public function getCommentsCount($where, $threadId = '')
+    public function getCommentsCount($where= 'where active = 1', $threadId = '')
     {
+
         if ($threadId) {
-            $res = $this->db->query("SELECT COUNT(*) FROM comments where parent = {$threadId}");
+            $res = $this->db->query("SELECT COUNT(*) FROM comments where parent = {$threadId} and active = 1");
         } else {
             $res = $this->db->query("SELECT COUNT(*) FROM comments {$where}");
         }
@@ -31,20 +32,9 @@ class Comments extends Model
         $data = $this->prepareDataforCreate($properities);
 
         $q = $this->db->prepare("INSERT INTO `comments` ({$data['keys']}) VALUES ({$data['values']})");
-        print_r($q->execute());
+        return $q->execute();
     }
-
-    public function prepareDataforCreate($data)
-    {
-        if (!$data) die('Data wasnt set in CreateComment Action');
-        foreach ($data as $key => $value) {
-            $output['keys'][] = "`" . htmlspecialchars($key) . "`";
-            $output['values'][] = "'".htmlspecialchars($value)."'";
-
-        }
-        $output['keys'] = implode(',', $output['keys']);
-        $output['values'] = implode(',', $output['values']);
-        return $output;
-    }
+    
+  
 }
 

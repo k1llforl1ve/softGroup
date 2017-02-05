@@ -18,10 +18,8 @@
             <div class="post-description">
                 <p>Це ваш тестовий користувач.</p>
                 <div class="stats">
-                    <a href="#" class="btn btn-default stat-item">
-                        <i class="fa fa-thumbs-up icon"></i>2
-                    </a>
-                    <a href="#" class="btn btn-default stat-item">
+
+                    <a href="#" onclick="return false;" class="btn btn-default stat-item">
                         <i class="fa fa-share icon"></i><?= $data['commentscount'] ?>
                     </a>
                 </div>
@@ -41,13 +39,14 @@
                     <form action="login/login">
                         <div class="form-group">
                             <label for="usr">Логін:</label>
-                            <input type="text" name="user"required class="form-control" id="usr">
+                            <input type="text" name="user" required class="form-control" id="usr">
                         </div>
                         <div class="form-group">
                             <label for="pwd">Пароль:</label>
                             <input type="password" name="password" required class="form-control" id="pwd">
                         </div>
                         <button type="submit" class="btn btn-default">Увійти</button>
+                        <button type="button" onclick="location.href='<?= SITE_URL.'login/register' ?>'" class="btn btn-default">Реєсрація</button>
                     </form>
                 <? endif; ?>
                 <ul class="comments-list">

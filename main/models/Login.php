@@ -4,12 +4,13 @@ include_once ROOT_PATH . 'models/Model.php';
 
 class Login extends Model
 {
-    public  $id;
-    public  function __construct()
+    public $id;
+
+    public function __construct()
     {
         parent::__construct();
         $this->id = 0;
-        if (isset($_SESSION['userId'])){
+        if (isset($_SESSION['userId'])) {
             $this->id = $_SESSION['userId'];
         }
     }
@@ -17,11 +18,12 @@ class Login extends Model
     public static function getId()
     {
         $id = 0;
-        if (isset($_SESSION['userId'])){
+        if (isset($_SESSION['userId'])) {
             $id = $_SESSION['userId'];
         }
         return $id;
     }
+
     public function get($para)
     {
         $q = $this->db->prepare("SELECT $para FROM users WHERE id = :id");
@@ -32,10 +34,15 @@ class Login extends Model
         $data = $q->fetchAll();
         print_r($data);
     }
+    public function createUser($properities)
+    {
+        $data = $this->prepareDataforCreate($properities);
 
+        $q = $this->db->prepare("INSERT INTO `users` ({$data['keys']}) VALUES ({$data['values']})");
+        print_r($q->execute());
+    }
     public function getUser($userId)
     {
-        print_r($userId);
         $q = $this->db->prepare("SELECT * FROM users WHERE id = :id");
         $q->execute(array(
             ':id' => $userId,
