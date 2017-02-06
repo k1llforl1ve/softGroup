@@ -52,9 +52,7 @@ class Comments extends Model
 
     public function createComment($properities)
     {
-        $q = $this->db->prepare("DESCRIBE comments");
-        $q->execute();
-        $table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
+        $table_fields = $this->getTableField('comments');
 
         $data = $this->prepareDataforCreate($properities,array_flip($table_fields));
 
@@ -62,7 +60,28 @@ class Comments extends Model
 
         return $q->execute()==1?'User was created':'User wasnt created';
     }
-    
+    public static function getStars($commentId,$userId ='')
+    {
+        if($userId == '')
+        {
+            $login = new Login();
+            $userId =$login->getId();
+        }
+
+        $db = parent::getDbConnection();
+        $res = $db->prepare('SELECT value FROM  `comments_votes` WHERE comment_id = :com_id and createdby = :usr_id');
+        $res->setFetchMode(PDO::FETCH_ASSOC);
+        $res->execute(array(
+            ':com_id' => $commentId,
+            ':usr_id' => $userId,
+
+        ));
+        $data = $res->fetchAll();
+//        print_r($data[0]['value']);
+        if ($data){print_r ($data[0]['value']);}
+        return 0;
+
+    }
   
 }
 

@@ -18,9 +18,15 @@
                 </div>
             </div>
 
+        <? if (isset($_SESSION['userId']) && $item['createdby'] != $_SESSION['userId']): ?>
+       
+            <div class="row lead">
+                <div id="stars" data-rating='<? Comments::getStars($item['id'])?>'class="starrr"></div>
 
-
+            </div>
+         <? endif; ?>
         </div>
+
         <? if (isset($_SESSION['userId']) && $item['createdby'] == $_SESSION['userId']): ?>
             <div class="function">
                 <div class="edit">edit</div>

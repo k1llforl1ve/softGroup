@@ -3,7 +3,7 @@
 class Model
 {
 
-    protected $db;
+    public $db;
 
     public function __construct()
     {
@@ -23,7 +23,7 @@ class Model
         {
             $data = array_intersect_key  ($data, $dataPreset);
         }
-        if (!$data) die('Data wasnt set in CreateComment Action');
+        if (!$data) die('Data wasnt set in prepareDataforCreate Model');
         foreach ($data as $key => $value) {
             $output['keys'][] = "`" . htmlspecialchars($key) . "`";
             $output['values'][] = "'".htmlspecialchars($value)."'";
@@ -32,6 +32,14 @@ class Model
         $output['keys'] = implode(',', $output['keys']);
         $output['values'] = implode(',', $output['values']);
         return $output;
+    }
+    public function getTableField($tableName)
+    {
+        $tableName = htmlspecialchars($tableName);
+        $q = $this->db->prepare("DESCRIBE {$tableName}");
+        $q->execute();
+        $table_fields = $q->fetchAll(PDO::FETCH_COLUMN);
+        return $table_fields;
     }
 
 }

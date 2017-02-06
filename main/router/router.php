@@ -36,8 +36,10 @@ class Router
         $middleController = new MiddleController();
 
         $uri = $this->getUri();
+
         foreach($this->routes as $uriTemplate => $path){
             if (preg_match("~$uriTemplate~",$uri)){
+        
                 $s = explode('/',$path);
 
                 $controllerName = array_shift($s);
@@ -56,7 +58,9 @@ class Router
                 if ($res != null){
                     break;
                 }
+                
             }
         }
+
     }
 }

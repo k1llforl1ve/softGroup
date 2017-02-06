@@ -59,6 +59,22 @@ class AjaxController
 
         print_r(json_encode(array('message'=>'everything is ok')));
     }
+    public function actionVote($data = '')
+    {
+        if (!$data) $data = $_REQUEST;
+        $data['createdon'] = time();
+
+        include_once ROOT_PATH . 'models/Vote.php';
+        $vote = new Vote();
+        $vote->vote($data);
+//        include_once ROOT_PATH . 'controllers/CommentsController.php';
+//        $comments = new Comments();
+//        $login = new Login();
+//        if ($login->id != $data['createdby'])  return false;
+//        $comments->delete($data['commentid']);
+//
+//        print_r(json_encode(array('message'=>'everything is ok')));
+    }
 //    public function actionIndex($data = '')
 //    {
 //        if ($this->checkAjax() === false) echo 'Nope, Something wrong with AjaxController.php with ajax';
