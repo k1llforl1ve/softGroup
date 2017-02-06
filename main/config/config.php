@@ -1,10 +1,5 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: USER
- * Date: 31.01.2017
- * Time: 0:15
- */
+//Дефолтные и общие констранты, для работы с базой или сервером(доменом)
 $database_type = 'mysql';
 $database_server = 'kifa.mysql.ukraine.com.ua';
 $database_user = 'kifa_soft';
@@ -26,4 +21,3 @@ if (!defined('SITE_URL')) {
     $site_url= "http://123456.com.ua/soft/";
     define('SITE_URL', $site_url);
 }
-return array('database_type'=>'test');

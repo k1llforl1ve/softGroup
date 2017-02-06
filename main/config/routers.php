@@ -1,4 +1,5 @@
 <?php
+//Все роуты, ключ - регулярное выражение URI, value - название контроллера и метода
 return array(
 
     'comments' => 'comments/index', //CommentsController.php->actionIndex

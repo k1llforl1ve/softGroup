@@ -3,6 +3,9 @@ include_once ROOT_PATH . 'models/Model.php';
 
 class Session extends Model
 {
+    /**
+     * Инициализация сессии
+     */
     public static function init()
     {
         @session_start();
@@ -13,16 +16,18 @@ class Session extends Model
 
         session_destroy();
     }
+    // Сэттер сессии
     public static function set($key, $value) {
         $_SESSION[$key] = $value;
     }
-
+    // Getter
     public static function get($key) {
         if(isset($_SESSION[$key]))
             return $_SESSION[$key];
     }
 
     /**
+     * Провека на существование сессии для активного сеанса
      * @return bool
      */
     public static function is_session_started()

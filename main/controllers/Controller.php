@@ -7,7 +7,7 @@ class Controller
     {
     
     }
-
+    //Рендеринг в общий шаблон, необходимых view из папки view/ControllerName/$page_view.php
     public function render($page_view, $data = '', $template_view = "mainTemp.php")
     {
         require(dirname(dirname(__FILE__)) . '/config/config.php');

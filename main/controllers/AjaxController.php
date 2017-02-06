@@ -13,9 +13,15 @@ class AjaxController
 //        }
 //
 //    }
+    /**
+     * Обработка псевдо аякс запроса( не проходит проверку на аяксоность, и даже не можеть "вернуть" - return не работает)
+     * Создаем комментарий и получаем сразу список всех комментариев и их количество(для аякса)
+     * @param string $data
+     */
     public function actionCreate($data = '')
     {
         if (!$data) $data = $_REQUEST;
+        // Дата создание коммента в UNIX
         $data['createdon'] = time();
         include_once ROOT_PATH . 'controllers/CommentsController.php';
         $comments = new Comments();
@@ -34,6 +40,11 @@ class AjaxController
         print_r(json_encode($output));
 
     }
+
+    /**
+     * Редактирование комментария, аякс запрос, возваращаем json массив
+     * @param string $data
+     */
     public function actionEdit($data = '')
     {
         if (!$data) $data = $_REQUEST;
@@ -48,6 +59,15 @@ class AjaxController
 
         print_r(json_encode(array('message'=>'everything is ok')));
     }
+
+    /**
+     * Удаление коммента с проверкой юзера на возможность удалить коммент
+     * TODO: расширить: проверка или это админ, чтобы удалить, проверить или это человек создавший ветвь комментариев и т.д
+     * @param string $data
+     * @return bool
+     */
+
+
     public function actionDelete($data = '')
     {
         if (!$data) $data = $_REQUEST;
@@ -62,6 +82,11 @@ class AjaxController
         $output['countcom'] = $comments->getCommentsCount();
         print_r(json_encode($output));
     }
+
+    /**
+     * Аякс запрос на голосование, добавляем UNIX время создание строчки в бд(голоса)
+     * @param string $data
+     */
     public function actionVote($data = '')
     {
         if (!$data) $data = $_REQUEST;
@@ -79,6 +104,10 @@ class AjaxController
 //        print_r($data);
 //
 //    }
+    /**
+     * Ajax обновление всех комментов в шаблонизаторе. Возвращаем json c количеством и самими комментами
+     */
+
     public function actionRefresh()
     {
         include_once ROOT_PATH . 'controllers/CommentsController.php';

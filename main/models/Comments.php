@@ -5,23 +5,24 @@ include_once ROOT_PATH . 'models/Model.php';
 class Comments extends Model
 {
 
-
+    /**
+     * Получаем количество комментариев(сразу удаляем все не актуальные комментарии)
+     * @param string $where
+     * @param bool $threadId
+     * @return int
+     */
     public function getCommentsCount($where= 'where active = 1', $threadId = false)
     {
-
-        if ($threadId) {
-            $res = $this->db->query("SELECT COUNT(*) FROM comments where parent = {$threadId} and active = 1");
-        } else {
-            $res = $this->db->query("SELECT id,parent FROM comments {$where}");
-        }
+        $res = $this->db->query("SELECT id,parent FROM comments {$where}");
         $res->setFetchMode(PDO::FETCH_ASSOC);
         $data = $res->fetchAll();
+        //Информация не найдена тогда возрвращаем количество = 0
         if (!$data && !empty($data)) return 0;
         // TODO: знайти інший варіант пошуку валідності коментаря(якщо існує батько), наприклад через побудову дерева ресурсів
+        // Записываем айди комментариев в отдельный массив для быстрой проверки(in_array)
         foreach ($data as $iten)
         {
             $a[] = $iten['id'];
-            $b[] = $iten['parent'];
         }
         // TODO: перенести в свойство( с проверками и т.д). Идея, все деларжать в MiddleController Или другом месте и обращаться через $this->middleco->comments
 
@@ -39,7 +40,16 @@ class Comments extends Model
 
         return count($ids);
     }
-    // TODO:передалть под человечискую форму сета. Объект должен быть 1 строчкой или всем массивом.
+    // TODO:передать под человечискую форму сета. Объект должен быть 1 строчкой или всем массивом.
+    // Самописный сэттер, все стандартно, но(проблема  в том, что здесь необходимо убрать лишние параметры и проверка на юзера делать в другом месте)
+    // По-хорошему, нужен другой метод специально для редактировании body комментария.
+    /**
+     * @param $para
+     * @param $value
+     * @param $id
+     * @param $userId
+     * @return bool
+     */
     public function set($para,$value,$id,$userId)
     {
 //        print_r("UPDATE  comments SET  $para = '{$value}' WHERE  id = '{$id}' and createdby = '{$userId}'");
@@ -51,9 +61,13 @@ class Comments extends Model
 
         return false;
     }
+    //Удаление комментарие по айди
+    /**
+     * @param $para
+     * @return bool
+     */
     public function delete($para)
     {
-//        print_r("UPDATE  comments SET  $para = '{$value}' WHERE  id = '{$id}' and createdby = '{$userId}'");
         $q = $this->db->prepare("DELETE FROM comments WHERE id = :id");
         if ($q->execute(array(
             ':id' => $para,
@@ -62,6 +76,11 @@ class Comments extends Model
 
         return false;
     }
+
+    /**
+     * получаем все комментарии(массив значений)
+     * @return array
+     */
     public function getAllComments()
     {
 
@@ -72,16 +91,29 @@ class Comments extends Model
         return $data;
     }
 
+    /**
+     * Создание комментария
+     * @param $properities
+     * @return string
+     */
     public function createComment($properities)
     {
+        //Получаем поля из базы, для нашей таблицы, для того чтобы сделать array_intersect - удалим лишний мусор и оставим необходимые поля для создание комментраия
         $table_fields = $this->getTableField('comments');
-
+        //Перевод данных из массива по типу $_REQUEST, в массив з 2 элементами(строками) - ключи и значения
         $data = $this->prepareDataforCreate($properities,array_flip($table_fields));
 
         $q = $this->db->prepare("INSERT INTO `comments` ({$data['keys']}) VALUES ({$data['values']})");
 
         return $q->execute()==1?'User was created':'User wasnt created';
     }
+
+    /**
+     * Получение количества звезд для определенного комментария
+     * @param $commentId
+     * @param string $userId
+     * @return int
+     */
     public static function getStars($commentId,$userId ='')
     {
         if($userId == '')
@@ -100,10 +132,17 @@ class Comments extends Model
         ));
         $data = $res->fetchAll();
 //        print_r($data[0]['value']);
+        //Бред, да. Но return для static не работает, поэтому так. По хорошему, нужно было из контроллера получить необходимые значение и тут за print_r
         if ($data){print_r ($data[0]['value']);}
         return 0;
 
     }
+
+    /**
+     * Получаем среднее значение всех оценок для определенного комментария, то бишь AvG
+     * @param $commentId
+     * @return bool
+     */
     public static function getAvgStars($commentId)
     {
         $db = parent::getDbConnection();
@@ -121,9 +160,16 @@ class Comments extends Model
         }
 
 //        print_r($data[0]['value']);
+
         print_r( round (array_sum($scores)/count($scores),2));
 //        return '1';
     }
+
+    /**
+     * Получаем всех внутренних комментраиев из дерева комментариев
+     * @param $commentId
+     * @return bool
+     */
     public static function getCommentChilds($commentId)
     {
         $db = parent::getDbConnection();
@@ -135,6 +181,7 @@ class Comments extends Model
         ));
         $data['output'] = $res->fetchAll();
         if (!$data['output']){  return true;}
+        //Шаблонизатор :)
         ob_start();
         if ($data['output']) {
             require ROOT_PATH . 'views/Comments/tpls/Comments.php';

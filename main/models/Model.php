@@ -9,6 +9,11 @@ class Model
     {
         $this->db = Model::getDbConnection();
     }
+
+    /**
+     * Тривиальное подключение к базе
+     * @return PDO
+     */
     public static function getDbConnection()
     {
         require(dirname(dirname(__FILE__)) . '/config/config.php');
@@ -17,8 +22,18 @@ class Model
         $db = new PDO($dsn, $database_user, $database_password);
         return $db;
     }
+
+    /**
+     * Получаем и обрабатываем данные(преобразуем массив в 2 строки со значениями и ключами)
+     * Необходимые для get и set функций для SQL запроса на UPDATE
+     * @param $data
+     * @param string $dataPreset
+     * @return mixed
+     */
     public function prepareDataforCreate($data,$dataPreset='')
     {
+        // если есть необходимый шаблон(пресет) необходимого массива на выходе
+        // Сделано, чтобы убирать SessionId, Q из $_REQUEST
         if ($dataPreset != '')
         {
             $data = array_intersect_key  ($data, $dataPreset);
@@ -33,6 +48,7 @@ class Model
         $output['values'] = implode(',', $output['values']);
         return $output;
     }
+    // Получаем название полей в таблице
     public function getTableField($tableName)
     {
         $tableName = htmlspecialchars($tableName);

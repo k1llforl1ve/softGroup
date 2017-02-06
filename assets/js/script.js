@@ -1,16 +1,38 @@
 $(document).ready(function () {
     // TODO: Разобраться с [0] Элементами для вложености
+    //TODO: Разобраться с this и [0] кашей для вложенных комментариев
+    //обработчик саксэса для регистрации
     if (window.location.href.indexOf('reg=success') !== -1) {
         alert('Реєстрація пройшла успішно');
         history.pushState(null, null, window.location.origin + window.location.pathname);
 
     }
+    // Обработчик ошибки авторизации
     if (window.location.href.indexOf('log=err') !== -1) {
         alert('Помилка авторизації, логін або пароль не вірні');
         history.pushState(null, null, window.location.origin + window.location.pathname);
 
     }
 
+    //Редактирование комментария(вызов текст эрии)
+    $('.comments-list').on('click', '.comment .edit',function (event)
+    {
+        var $this = $(this).closest('.comment').find('p')[0];
+        var $this2 = $(this).closest('.comment').find('.spec')[0];
+        $($this).hide();
+        $($this2).removeClass('dis-none');
+
+    });
+    //Редактирование отмена редактирвоания
+    $('.comments-list').on('click','.comment button[name=btn-cancel]', function (event)
+    {
+        var $this = $(this).closest('.comment').find('p')[0];
+        var $this2 = $(this).closest('.comment').find('.spec')[0];
+        $($this).show();
+        $($this2).addClass('dis-none');
+
+    });
+    //Редактирование комментария(клик по кнопке сохранить), отправляет данные, при получении ответа скрывает текстареа и зануляет
     $('.comments-list').on('click', '.comment button[name=btn-save]',function (event){
         var thishtml = $(this);
         $.ajax({
@@ -46,6 +68,7 @@ $(document).ready(function () {
         }
         return false;
     });
+    // Удаление комментария и всей ветви.
     $('.comments-list').on('click', '.comment .delete', function (event){
         var thishtml = $(this);
         $.ajax({
@@ -55,29 +78,14 @@ $(document).ready(function () {
                 commentid: $(this).closest('.comment').attr('data-comment-id'),
             }, success: function (output) {
                 thishtml.closest('.comment').hide();
+                //Инициализация звезд о5 и получение количества комментариев
                 $('.post-description b').html(output.countcom);
                 $(".starrr").starrr();
             }
         });
     });
-    //Редактирование комментария
-    $('.comments-list').on('click', '.comment .edit',function (event)
-    {
-        var $this = $(this).closest('.comment').find('p')[0];
-        var $this2 = $(this).closest('.comment').find('.spec')[0];
-        $($this).hide();
-        $($this2).removeClass('dis-none');
 
-    });
-    //Редактирование отмена редактирвоания
-    $('.comments-list').on('click','.comment button[name=btn-cancel]', function (event)
-    {
-        var $this = $(this).closest('.comment').find('p')[0];
-        var $this2 = $(this).closest('.comment').find('.spec')[0];
-        $($this).show();
-        $($this2).addClass('dis-none');
 
-    });
     //Создание комментария
     //клик по энтеру
     $('.comments-list').on('keypress','.input-group input',(function(event){
@@ -114,7 +122,7 @@ $(document).ready(function () {
 
 
     });
-    //обновить ленту
+    //обновить ленту(кнопка)
     $('.container .refresh').on('click', function (event) {
 
         event.preventDefault();
@@ -122,6 +130,7 @@ $(document).ready(function () {
             type: "POST", url: "ajax/refresh", dataType: "json",
             data: {
             }, success: function (output) {
+                // Получаем актуальные комменты, число комментариев и обновляем библиотеку звезд
                 $('.comments-list').html(output.comments);
                 $('.post-description b').html(output.countcom);
                 $(".starrr").starrr();
@@ -141,16 +150,5 @@ $(document).ready(function () {
             alert('Пароли не совпадают');
             event.preventDefault();
         }
-        // $.ajax({
-        //     type: "POST", url: "ajax/create", dataType: "json",
-        //     data: {
-        //         parent:'3',
-        //         body:$('.post-footer input').val(),
-        //     }, success: function (output) {
-        //
-        //     }
-        // });
-
-
     });
 });
