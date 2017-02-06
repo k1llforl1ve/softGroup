@@ -9,20 +9,24 @@
                 </div>
                 <div class="pull-left meta">
                     <div class="title h5">
-                        <a href="#"><b><? print_r($_SESSION['user']['login']) ?></b></a>
+                        <b><? print_r($_SESSION['user']['login']) ?></b>
 
                     </div>
                     <a href="<?php echo SITE_URL; ?>login/logout">Logout</a>
                 </div>
             </div>
             <div class="post-description">
-                <p>Це ваш тестовий користувач.</p>
+
+                <p>Це ваш тестовий користувач. Наразі такі елементи управління:</p>
+                <p><span class="glyphicon glyphicon-edit"></span> - редагування коментарю(власного);</p>
+                <p><span class="glyphicon glyphicon-trash"></span> - видалення(власного);</p>
+                <p><span class="glyphicon glyphicon-send"></span> - відповісти.</p>
                 <div class="stats">
 
-                    <a href="#" onclick="return false;" class="btn btn-default stat-item">
+                    <span  class="btn btn-default stat-item">
                         <i class="glyphicon glyphicon-envelope"></i>
                         <b><?= $data['commentscount'] ?></b>
-                    </a>
+                    </span>
                 </div>
             </div>
             <? endif;?>
@@ -36,7 +40,10 @@
                         </span>
                     </div>
                 <? else: ?>
-                    <h3>Будь ласка, увійдіть для того, щоб залишати коментарі!</h3>
+                    <h3>Будь ласка, увійдіть для того, щоб залишати коментарі! </h3>
+                    <h4>Юзер admin або зареєструйте нового</h4>
+                    <p>Логін і пароль  для користувача admin - l: admin p: 123456 (0 привелегій)</p>
+
                     <form action="login/login">
                         <div class="form-group">
                             <label for="usr">Логін:</label>
@@ -47,7 +54,7 @@
                             <input type="password" name="password" required class="form-control" id="pwd">
                         </div>
                         <button type="submit" class="btn btn-default">Увійти</button>
-                        <button type="button" onclick="location.href='<?= SITE_URL.'login/register' ?>'" class="btn btn-default">Реєсрація</button>
+                        <button type="button" onclick="location.href='<?= SITE_URL.'login/register' ?>'" class="btn btn-default">Реєстрація</button>
                     </form>
                 <? endif; ?>
                 <button type="button" class="refresh btn btn-info">Обновити Ленту</button>
