@@ -10,5 +10,6 @@ return array(
     'ajax/edit' => 'ajax/edit', //AjaxController.php->actionCreate
     'ajax/delete' => 'ajax/delete', //AjaxController.php->actionDelete
     'ajax/vote' => 'ajax/vote', //AjaxController.php->actionVote
+    'ajax/refresh' => 'ajax/refresh', //AjaxController.php->actionVote
     '^soft$'=> 'site/index'  // mainPage
 );

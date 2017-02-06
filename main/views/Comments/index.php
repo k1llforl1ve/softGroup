@@ -50,6 +50,7 @@
                         <button type="button" onclick="location.href='<?= SITE_URL.'login/register' ?>'" class="btn btn-default">Реєсрація</button>
                     </form>
                 <? endif; ?>
+                <button type="button" class="refresh btn btn-info">Обновити Ленту</button>
                 <ul class="comments-list">
                     <!-- TODO: передать под функцию шаблонизации -->
                     <? print_r($data['comments'])?>

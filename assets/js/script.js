@@ -33,6 +33,7 @@ $(document).ready(function () {
                 commentid: $(this).closest('.comment').attr('data-comment-id'),
             }, success: function (output) {
                 thishtml.closest('.comment').hide();
+                $('.post-description b').html(parseInt($('.post-description b').html()) - 1);
             }
         });
     });
@@ -53,9 +54,20 @@ $(document).ready(function () {
 
     });
     //Создание комментария
+    //клик по энтеру
+    $('.post-footer input').keypress(function(event){
+        if(event.keyCode == 13){
+            $('.post-footer a i.fa').click();
+        }
+    });
+    //клик по кнопке
     $('.post-footer a i.fa').on('click', function (event) {
-
+        $('.post-footer input').closest('div').removeClass('has-error');
         event.preventDefault();
+        if ($('.post-footer input').val() == ''){
+            $('.post-footer input').closest('div').addClass('has-error');
+            return false;
+        }
         $.ajax({
             type: "POST", url: "ajax/create", dataType: "json",
             data: {
@@ -65,6 +77,22 @@ $(document).ready(function () {
                 $('.comments-list').html(output.comments);
                 $('.post-footer input').val('');
                 $('.post-description b').html(parseInt($('.post-description b').html()) + 1);
+            }
+        });
+
+
+    });
+    //обновить ленту
+    $('.container .refresh').on('click', function (event) {
+
+        event.preventDefault();
+        $.ajax({
+            type: "POST", url: "ajax/refresh", dataType: "json",
+            data: {
+            }, success: function (output) {
+                $('.comments-list').html(output.comments);
+                $('.post-description b').html(output.countcom);
+
             }
         });
 

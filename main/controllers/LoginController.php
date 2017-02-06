@@ -35,7 +35,7 @@ class LoginController extends Controller
     // TODO: сделать регистрацию с подтверджением
     public function actionRegister()
     {
-
+        $data = '';
         if (isset($_REQUEST['user']) && isset($_REQUEST['password']) && isset($_REQUEST['confirm_password'])) {
             if ($_REQUEST['password'] != $_REQUEST['confirm_password']){
                 $data['errors'] = 'passwords doesnt match';

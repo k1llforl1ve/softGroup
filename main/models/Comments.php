@@ -92,12 +92,14 @@ class Comments extends Model
 
         ));
         $data = $res->fetchAll();
+        if (!$data){ print_r( 0); return true;}
         foreach($data as $item)
         {
             $scores[] = $item['value'];
         }
+
 //        print_r($data[0]['value']);
-        print_r( array_sum($scores)/count($scores));
+        print_r( round (array_sum($scores)/count($scores),2));
 //        return '1';
     }
 }

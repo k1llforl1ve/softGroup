@@ -67,13 +67,7 @@ class AjaxController
         include_once ROOT_PATH . 'models/Vote.php';
         $vote = new Vote();
         $vote->vote($data);
-//        include_once ROOT_PATH . 'controllers/CommentsController.php';
-//        $comments = new Comments();
-//        $login = new Login();
-//        if ($login->id != $data['createdby'])  return false;
-//        $comments->delete($data['commentid']);
-//
-//        print_r(json_encode(array('message'=>'everything is ok')));
+
     }
 //    public function actionIndex($data = '')
 //    {
@@ -82,4 +76,18 @@ class AjaxController
 //        print_r($data);
 //
 //    }
+    public function actionRefresh()
+    {
+        include_once ROOT_PATH . 'controllers/CommentsController.php';
+        $Comments = new Comments();
+        $data['output'] = $Comments->getAllComments();
+        $data['countcom'] = $Comments->getCommentsCount();
+
+        ob_start();
+        if ($data['output']) {
+            require ROOT_PATH . 'views/Comments/tpls/Comments.php';
+        }
+        $data['comments'] =  ob_get_clean();
+        print_r(json_encode($data));
+    }
 }
