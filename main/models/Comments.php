@@ -82,6 +82,23 @@ class Comments extends Model
         return 0;
 
     }
-  
+    public static function getAvgStars($commentId)
+    {
+        $db = parent::getDbConnection();
+        $res = $db->prepare('SELECT value FROM  `comments_votes` WHERE comment_id = :com_id');
+        $res->setFetchMode(PDO::FETCH_ASSOC);
+        $res->execute(array(
+            ':com_id' => $commentId,
+
+        ));
+        $data = $res->fetchAll();
+        foreach($data as $item)
+        {
+            $scores[] = $item['value'];
+        }
+//        print_r($data[0]['value']);
+        print_r( array_sum($scores)/count($scores));
+//        return '1';
+    }
 }
 

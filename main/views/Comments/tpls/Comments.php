@@ -1,5 +1,6 @@
 <? foreach ($data['output'] as $item): ?>
     <li class="comment" data-user-id="<?= $item['createdby']?>" data-comment-id="<?= $item['id'] ?>">
+        <div class="av-rating">Середній рейтинг коментаря:<? Comments::getAvgStars($item['id'])?></div>
         <a class="pull-left" href="#">
             <img class="avatar" src="http://bootdey.com/img/Content/user_1.jpg" alt="avatar">
         </a>
@@ -12,6 +13,7 @@
 
             <div class="spec form-group dis-none">
                 <textarea  class="form-control" rows="3" class="newvalue"> <?= htmlspecialchars($item['body']) ?></textarea>
+
                 <div class="button-save">
                     <button type="button" name="btn-cancel" class="btn">Отмена</button>
                     <button type="button" name="btn-save"   class="btn btn-primary">Сохранить</button>
@@ -19,7 +21,7 @@
             </div>
 
         <? if (isset($_SESSION['userId']) && $item['createdby'] != $_SESSION['userId']): ?>
-       
+
             <div class="row lead">
                 <div id="stars" data-rating='<? Comments::getStars($item['id'])?>'class="starrr"></div>
 

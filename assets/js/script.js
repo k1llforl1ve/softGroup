@@ -4,6 +4,11 @@ $(document).ready(function () {
         history.pushState(null, null, window.location.origin + window.location.pathname);
 
     }
+    if (window.location.href.indexOf('log=err') !== -1) {
+        alert('Помилка авторизації, логін або пароль не вірні');
+        history.pushState(null, null, window.location.origin + window.location.pathname);
+
+    }
     $('.comment button[name=btn-save]').on('click', function (event){
         var thishtml = $(this);
         $.ajax({

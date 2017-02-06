@@ -79,7 +79,7 @@ class Login extends Model
             Session::set('userId', $data[0]['id']);
             header('Location:' . SITE_URL . 'comments');
         } else {
-//            header('Location: ../login');
+            header('Location:' . SITE_URL . 'comments/?log=err');
         }
     }
 }
