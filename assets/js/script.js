@@ -1,4 +1,5 @@
 $(document).ready(function () {
+    // TODO: Разобраться с [0] Элементами для вложености
     if (window.location.href.indexOf('reg=success') !== -1) {
         alert('Реєстрація пройшла успішно');
         history.pushState(null, null, window.location.origin + window.location.pathname);
@@ -9,6 +10,7 @@ $(document).ready(function () {
         history.pushState(null, null, window.location.origin + window.location.pathname);
 
     }
+
     $('.comments-list').on('click', '.comment button[name=btn-save]',function (event){
         var thishtml = $(this);
         $.ajax({
@@ -18,11 +20,31 @@ $(document).ready(function () {
                 commentid: $(this).closest('.comment').attr('data-comment-id'),
                 body: $(this).closest('.comment').find('textarea').val(),
             }, success: function (output) {
-                thishtml.closest('.comment').find('p').html(thishtml.closest('.comment').find('textarea').val());
-                thishtml.closest('.comment').find('p').show();
-                thishtml.closest('.comment').find('.spec').addClass('dis-none');
+                var $this = thishtml.closest('.comment').find('p')[0];
+                var $this2 = thishtml.closest('.comment').find('.spec')[0];
+                $($this).html(thishtml.closest('.comment').find('textarea').val());
+                $($this).show();
+
+                $($this2).addClass('dis-none');
             }
         });
+    });
+    // Клик по "ответить", для добавление инпута или убирания
+    $('.comments-list').on('click', '.comment .answer',function (event){
+
+        var thishtml = $(this);
+        var input = '<div class="input-group"> <input class="form-control" placeholder="Add a comment" type="text"> <span class="input-group-addon"> <a href="#"><i class="fa fa-edit"></i></a> </span> </div>';
+        var obj =  $(this).closest('.comment').find('.comment-body')[0];
+        //Велосипед из return false из-за многократной вложености и прохождение всего в цикле
+        if ( $(obj).hasClass('input') == true) {
+            $(obj).find('.input-group').remove();
+            $(obj).removeClass('input');
+        }else{
+            $(obj).addClass('input');
+            $(obj).append(input);
+
+        }
+        return false;
     });
     $('.comments-list').on('click', '.comment .delete', function (event){
         var thishtml = $(this);
@@ -33,50 +55,60 @@ $(document).ready(function () {
                 commentid: $(this).closest('.comment').attr('data-comment-id'),
             }, success: function (output) {
                 thishtml.closest('.comment').hide();
-                $('.post-description b').html(parseInt($('.post-description b').html()) - 1);
+                $('.post-description b').html(output.countcom);
+                $(".starrr").starrr();
             }
         });
     });
     //Редактирование комментария
     $('.comments-list').on('click', '.comment .edit',function (event)
     {
-
-        $(this).closest('.comment').find('p').hide();
-        $(this).closest('.comment').find('.spec').removeClass('dis-none');
+        var $this = $(this).closest('.comment').find('p')[0];
+        var $this2 = $(this).closest('.comment').find('.spec')[0];
+        $($this).hide();
+        $($this2).removeClass('dis-none');
 
     });
     //Редактирование отмена редактирвоания
-    $('.comment button[name=btn-cancel]').on('click', function (event)
+    $('.comments-list').on('click','.comment button[name=btn-cancel]', function (event)
     {
-
-        $(this).closest('.comment').find('p').show();
-        $(this).closest('.comment').find('.spec').addClass('dis-none');
+        var $this = $(this).closest('.comment').find('p')[0];
+        var $this2 = $(this).closest('.comment').find('.spec')[0];
+        $($this).show();
+        $($this2).addClass('dis-none');
 
     });
     //Создание комментария
     //клик по энтеру
-    $('.post-footer input').keypress(function(event){
+    $('.comments-list').on('keypress','.input-group input',(function(event){
         if(event.keyCode == 13){
-            $('.post-footer a i.fa').click();
+            console.log('1');
+            var $this = $(this).closest('.input-group').find('.fa.fa-edit')[0];
+            $($this).click();
+            return false;
+
         }
-    });
+    }));
     //клик по кнопке
-    $('.post-footer a i.fa').on('click', function (event) {
-        $('.post-footer input').closest('div').removeClass('has-error');
+    $('.container').on('click', '.post-footer a i.fa',function (event) {
+        var $this = $(this);
+        $(this).closest('.input-group div').removeClass('has-error');
         event.preventDefault();
-        if ($('.post-footer input').val() == ''){
-            $('.post-footer input').closest('div').addClass('has-error');
+        if ($(this).closest('input-group').find('input').val() == ''){
+            $(this).closest('.input-group div').addClass('has-error');
             return false;
         }
         $.ajax({
             type: "POST", url: "ajax/create", dataType: "json",
             data: {
-                parent: '3',
-                body: $('.post-footer input').val(),
+                // Если .comment существует и унего есть коммент айди, то присвить его, в противном случае вернуть 0
+                parent: (($(this).closest('.comment').attr('data-comment-id')  != null) ?  $(this).closest('.comment').attr('data-comment-id') : 0),
+                body: $($this).closest('.input-group').find('input').val(),
             }, success: function (output) {
                 $('.comments-list').html(output.comments);
                 $('.post-footer input').val('');
-                $('.post-description b').html(parseInt($('.post-description b').html()) + 1);
+                $('.post-description b').html(output.countcom);
+                $(".starrr").starrr();
             }
         });
 
@@ -92,7 +124,7 @@ $(document).ready(function () {
             }, success: function (output) {
                 $('.comments-list').html(output.comments);
                 $('.post-description b').html(output.countcom);
-
+                $(".starrr").starrr();
             }
         });
 

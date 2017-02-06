@@ -28,13 +28,19 @@
             </div>
          <? endif; ?>
         </div>
+        <div class="function">
+        <? if (isset($_SESSION['userId'])): ?>
+            <? if ($item['createdby'] == $_SESSION['userId']){ ?>
 
-        <? if (isset($_SESSION['userId']) && $item['createdby'] == $_SESSION['userId']): ?>
-            <div class="function">
-                <div class="edit">edit</div>
-                <div class="delete">delete</div>
-            </div>
+                <div class="edit glyphicon glyphicon-edit"></div>
+                <div class="delete glyphicon glyphicon-trash"></div>
+            <? }?>
+            <div class="answer glyphicon glyphicon-send"></div>
         <? endif; ?>
+        </div>
+        <ul class="comments-list">
+            <? Comments::getCommentChilds($item['id'])?>
+        </ul>
     </li>
 
 <? endforeach; ?>

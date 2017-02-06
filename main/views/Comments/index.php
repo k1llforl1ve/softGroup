@@ -20,7 +20,7 @@
                 <div class="stats">
 
                     <a href="#" onclick="return false;" class="btn btn-default stat-item">
-                        <i class="fa fa-share icon"></i>
+                        <i class="glyphicon glyphicon-envelope"></i>
                         <b><?= $data['commentscount'] ?></b>
                     </a>
                 </div>

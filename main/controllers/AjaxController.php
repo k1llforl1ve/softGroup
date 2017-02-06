@@ -30,6 +30,7 @@ class AjaxController
             require ROOT_PATH . 'views/Comments/tpls/Comments.php';
         }
         $output['comments'] =  ob_get_clean();
+        $output['countcom'] = $comments->getCommentsCount();
         print_r(json_encode($output));
 
     }
@@ -50,14 +51,16 @@ class AjaxController
     public function actionDelete($data = '')
     {
         if (!$data) $data = $_REQUEST;
+        $output['message'] = 'Something went wrong with AjaxController actionDelete';
         $data['editedon'] = time();
         include_once ROOT_PATH . 'controllers/CommentsController.php';
         $comments = new Comments();
         $login = new Login();
-        if ($login->id != $data['createdby'])  return false;
-        $comments->delete($data['commentid']);
+        if ($login->id != $data['createdby'] )  return false;
+        if ($comments->delete($data['commentid'])) $output['message'] = 'everything is ok';
 
-        print_r(json_encode(array('message'=>'everything is ok')));
+        $output['countcom'] = $comments->getCommentsCount();
+        print_r(json_encode($output));
     }
     public function actionVote($data = '')
     {
