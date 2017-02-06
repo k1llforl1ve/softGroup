@@ -9,7 +9,7 @@ $(document).ready(function () {
         history.pushState(null, null, window.location.origin + window.location.pathname);
 
     }
-    $('.comment button[name=btn-save]').on('click', function (event){
+    $('.comments-list').on('click', '.comment button[name=btn-save]',function (event){
         var thishtml = $(this);
         $.ajax({
             type: "POST", url: "ajax/edit", dataType: "json",
