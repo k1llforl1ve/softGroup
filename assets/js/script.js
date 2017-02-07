@@ -1,6 +1,7 @@
 $(document).ready(function () {
     // TODO: Разобраться с [0] Элементами для вложености
     //TODO: Разобраться с this и [0] кашей для вложенных комментариев
+	// Потрібно зробити через parent и children
     //обработчик саксэса для регистрации
     if (window.location.href.indexOf('reg=success') !== -1) {
         alert('Реєстрація пройшла успішно');
@@ -97,13 +98,42 @@ $(document).ready(function () {
 
         }
     }));
-    //клик по кнопке
+	 // $('.container').on('click', '.post-footer a i.fa',function (event) {
+        // var $this = $(this);
+		// var $this2 = $(this).closest('input-group').find('input')[0];
+		// var $this3 = $(this).closest('.input-group div')[0];
+        // $($this3).removeClass('has-error');
+        // event.preventDefault();
+		
+        // if ($($this2).val() == ''){
+           // $($this3).addClass('has-error');
+            // return false;
+        // }
+        // $.ajax({
+            // type: "POST", url: "ajax/create", dataType: "json",
+            // data: {
+               // Если .comment существует и унего есть коммент айди, то присвить его, в противном случае вернуть 0
+                // parent: (($(this).closest('.comment').attr('data-comment-id')  != null) ?  $(this).closest('.comment').attr('data-comment-id') : 0),
+                // body: $($this).closest('.input-group').find('input').val(),
+            // }, success: function (output) {
+                // $('.comments-list').html(output.comments);
+                // $('.post-footer input').val('');
+                // $('.post-description b').html(output.countcom);
+                // $(".starrr").starrr();
+            // }
+        // });
+
+
+    // });
+    //клик по кнопке 
     $('.container').on('click', '.post-footer a i.fa',function (event) {
-        var $this = $(this);
-        $(this).closest('.input-group div').removeClass('has-error');
+
+        var $thisinput = $(this).closest('.input-group').children('input');
+        $($thisinput).parent('.input-group').removeClass('has-error');
         event.preventDefault();
-        if ($(this).closest('input-group').find('input').val() == ''){
-            $(this).closest('.input-group div').addClass('has-error');
+	
+        if ($($thisinput).val() == ''){
+            $($thisinput).parent('.input-group').addClass('has-error');
             return false;
         }
         $.ajax({
@@ -111,7 +141,7 @@ $(document).ready(function () {
             data: {
                 // Если .comment существует и унего есть коммент айди, то присвить его, в противном случае вернуть 0
                 parent: (($(this).closest('.comment').attr('data-comment-id')  != null) ?  $(this).closest('.comment').attr('data-comment-id') : 0),
-                body: $($this).closest('.input-group').find('input').val(),
+                body: $(this).closest('.input-group').find('input').val(),
             }, success: function (output) {
                 $('.comments-list').html(output.comments);
                 $('.post-footer input').val('');
@@ -119,6 +149,7 @@ $(document).ready(function () {
                 $(".starrr").starrr();
             }
         });
+		return false;
 
 
     });
